@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions - BrewSync</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/jpeg" href="images/growwpark_logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === RESET & CORE === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* === THEME VARIABLES === */
+        :root {
+            --bg-color: #ffffff;
+            --bg-secondary: #f8f8f9;
+            --bg-card: #ffffff; 
+            --text-main: #111111;
+            --text-muted: #666666;
+            --accent-color: #f59e0b; /* Amber/Brewery Vibe */
+            --border-color: #e5e5e5;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --drawer-bg: #111111;
+            --drawer-text: #ffffff;
+        }
+
+        /* DARK MODE */
+        body.dark-mode {
+            --bg-color: #0a0a0a;
+            --bg-secondary: #171717;
+            --bg-card: #1f1f1f; 
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --border-color: #2a2a2a;
+            --nav-bg: rgba(10, 10, 10, 0.95);
+        }
+
+        /* Input Placeholders for Dark/Light Mode Fix */
+        ::placeholder { color: #9ca3af !important; opacity: 1; transition: color 0.3s; }
+        body.dark-mode ::placeholder { color: #52525b !important; }
+
+        /* RTL SUPPORT */
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+        [dir="rtl"] .pl-4 { padding-right: 1rem; padding-left: 0; }
+        [dir="rtl"] .fa-arrow-right { transform: rotate(180deg); }
+
+        /* === NAVBAR (FULL WIDTH) === */
+        .navbar { 
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color); 
+            padding: 16px 0; transition: all 0.3s ease;
+            box-shadow: 0 4px 20px -10px rgba(0,0,0,0.05);
+        }
+        body.dark-mode .navbar { box-shadow: 0 4px 20px -10px rgba(0,0,0,0.5); }
+        
+        .nav-link { padding: 8px 12px; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; border-radius: 20px; }
+        .nav-link:hover, .nav-link.active { color: white; background: var(--accent-color); }
+        
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { position: absolute; top: 100%; left: 0; margin-top: 10px; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.2s ease; z-index: 100; }
+        .dropdown-inner { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; min-width: 220px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 12px 0; overflow: hidden; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item { display: block; padding: 10px 20px; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 500; transition: background 0.2s; }
+        .dropdown-item:hover { background: var(--bg-secondary); color: var(--accent-color); padding-left: 26px; }
+
+        /* DESKTOP PILL TOGGLE */
+        .theme-toggle-pill { width: 56px; height: 28px; background: var(--bg-secondary); border-radius: 30px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; border: 1px solid var(--border-color); }
+        .theme-toggle-pill i { font-size: 11px; z-index: 1; }
+        .theme-toggle-pill .fa-sun { color: #f59e0b; }
+        .theme-toggle-pill .fa-moon { color: #999; }
+        .theme-toggle-pill .thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: white; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 2; }
+        body.dark-mode .theme-toggle-pill .thumb { transform: translateX(28px); background: #262626; }
+
+        .btn { padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+        .btn-solid { background: var(--accent-color); color: white; border: 2px solid var(--accent-color); }
+        .btn-solid:hover { background: transparent; color: var(--accent-color); }
+        
+        .btn-outline-white { border: 2px solid white; color: white; background: transparent; }
+        .btn-outline-white:hover { background: white; color: #111; }
+
+        /* === REDESIGNED HERO === */
+        .hero-full {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('images/pexels-cottonbro-5537794.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+        }
+        .hero-full::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(10,10,10,0.95) 100%);
+            z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 0 24px; margin-top: 60px; w-full; }
+        .hero-badge { display: inline-block; padding: 6px 16px; background: var(--accent-color); color: white; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; border-radius: 30px; margin-bottom: 24px; }
+        
+        /* === SECTION UTILITIES === */
+        .section-pad { padding: 80px 24px; }
+        @media (min-width: 768px) { .section-pad { padding: 100px 24px; } }
+        .sec-title { font-size: 2.25rem; font-weight: 900; color: var(--text-main); margin-bottom: 1rem; letter-spacing: -0.5px; line-height: 1.2; }
+        @media (min-width: 768px) { .sec-title { font-size: 2.75rem; } }
+        .sec-subtitle { color: var(--accent-color); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem; margin-bottom: 0.75rem; display: inline-block; }
+
+        /* === FAQ ACCORDION STYLES === */
+        .faq-answer { display: none; }
+        .faq-answer.active { display: block; animation: slideDown 0.3s ease forwards; }
+        @keyframes slideDown { 
+            from { opacity: 0; transform: translateY(-5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .faq-btn i { transition: transform 0.3s ease; }
+        .faq-btn.active i { transform: rotate(180deg); color: var(--accent-color); }
+
+        /* === DRAWER === */
+        .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 320px; height: 100vh; background: var(--drawer-bg); z-index: 1000; transition: right 0.3s; padding: 30px; color: var(--drawer-text); overflow-y: auto; }
+        .drawer.active { right: 0; }
+        [dir="rtl"] .drawer { right: auto; left: -100%; transition: left 0.3s; }
+        [dir="rtl"] .drawer.active { left: 0; }
+        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; z-index: 999; }
+        .drawer-overlay.active { display: block; }
+        .drawer-link { display: block; padding: 14px 0; color: #a3a3a3; text-decoration: none; font-size: 16px; font-weight: 600; border-bottom: 1px solid #262626; transition: 0.2s; }
+        .drawer-link:hover { color: var(--accent-color); padding-left: 8px; border-color: var(--accent-color); }
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .hamburger span { width: 100%; height: 2px; background: var(--text-main); transition: 0.3s; border-radius: 2px; }
+        
+        /* Mobile Switch */
+        .toggle { width: 44px; height: 24px; background: #333; border-radius: 20px; position: relative; cursor: pointer; transition: all 0.3s; }
+        .toggle::before { content: ''; position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; top: 4px; left: 4px; transition: left 0.3s; }
+        .toggle.active { background: var(--accent-color); }
+        .toggle.active::before { left: 24px; }
+
+        /* === FOOTER === */
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding-top: 60px; }
+        footer h4 { color: var(--text-main); font-weight: 800; font-size: 1.1rem; margin-bottom: 24px; } 
+        footer a, footer li, footer span { color: var(--text-muted); text-decoration: none; transition: all 0.3s; font-size: 0.95rem; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--text-main); background: var(--bg-card); }
+        .social-link-circle:hover { background: var(--accent-color); color: white; border-color: var(--accent-color); transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding: 24px 0; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-tighter" style="color: var(--text-main); text-decoration: none;">
+                BrewSync
+            </a>
+            
+            <div class="hidden xl:flex items-center space-x-1">
+                <div class="dropdown">
+                    <div class="nav-link">Home <i class="fas fa-chevron-down text-[10px] ml-1 opacity-70"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="faq.html" class="nav-link active">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <div class="dropdown">
+                    <div class="nav-link">Dashboard <i class="fas fa-chevron-down text-[10px] ml-1 opacity-70"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="user.html" class="dropdown-item">User Dashboard</a>
+                            <a href="admin.html" class="dropdown-item">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden xl:flex items-center space-x-4">
+                <a href="register.html" class="btn btn-solid !py-2 !px-5 !text-xs">Register</a> <a href="login.html" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-amber-500 transition-colors">Login</a>
+                
+                <div class="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1"></div>
+                
+                <button id="rtl-btn" class="text-xs font-bold text-gray-500 hover:text-amber-500 uppercase tracking-widest">RTL</button>
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div>
+                </div>
+            </div>
+
+            <button id="mobile-btn" class="xl:hidden p-2">
+                <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+            </button>
+        </div>
+    </nav>
+
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="mb-8 flex justify-between items-center pb-4 border-b border-gray-800">
+            <h2 class="text-xl font-black text-white">BrewSync</h2>
+            <button id="close-drawer" class="text-gray-400 hover:text-white text-xl p-2"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex flex-col space-y-1">
+            <a href="index.html" class="drawer-link">Home Page 1</a>
+            <a href="home-2.html" class="drawer-link">Home Page 2</a>
+            <a href="about.html" class="drawer-link">About Us</a>
+            <a href="services.html" class="drawer-link">Services</a>
+            <a href="pricing.html" class="drawer-link">Pricing</a>
+            <a href="blog.html" class="drawer-link">Blog</a>
+            <a href="faq.html" class="drawer-link" style="color: var(--accent-color);">FAQ</a>
+            <a href="contact.html" class="drawer-link">Contact</a>
+            <div class="my-4 border-t border-gray-800"></div>
+            <a href="user.html" class="drawer-link">User Dashboard</a>
+            <a href="admin.html" class="drawer-link">Admin Dashboard</a>
+        </div>
+        <div class="mt-8 pt-6 border-t border-gray-800">
+            <div class="flex items-center justify-between mb-5">
+                <span class="text-gray-300 font-medium text-sm uppercase tracking-wider">Dark Mode</span>
+                <div class="toggle" id="theme-toggle-mobile"></div>
+            </div>
+            <div class="flex items-center justify-between mb-8">
+                <span class="text-gray-300 font-medium text-sm uppercase tracking-wider">RTL Mode</span>
+                <button id="rtl-toggle-mobile" class="text-white font-bold border border-gray-600 px-3 py-1 rounded text-xs hover:border-amber-500">SWITCH</button>
+            </div>
+            <a href="login.html" class="btn w-full text-center block mb-3 border border-gray-600 text-white hover:bg-gray-800">Login</a>
+            <a href="register.html" class="btn btn-solid w-full text-center block">Register</a>
+        </div>
+    </div>
+
+    <section class="hero-full w-full">
+        <div class="hero-content w-full">
+            <span class="hero-badge"><i class="fas fa-question-circle mr-2"></i>Help Center</span>
+            <h1 class="text-4xl md:text-5xl lg:text-[4rem] font-black leading-tight mb-6 text-white tracking-tight">Frequently Asked <br class="hidden sm:block"><span class="text-[var(--accent-color)]">Questions.</span></h1>
+            <p class="text-gray-300 text-base md:text-lg lg:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">Got questions about our taproom, brewery tours, keg sales, or Mug Club memberships? Find all the answers you need right here, or get in touch with our team.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#faq-taproom" class="btn btn-solid w-full sm:w-auto"><i class="fas fa-arrow-down mr-2"></i> Browse FAQs</a>
+                <a href="contact.html" class="btn btn-outline-white w-full sm:w-auto">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq-taproom" class="section-pad bg-[var(--bg-secondary)]">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <span class="sec-subtitle">The Basics</span>
+                <h2 class="sec-title">Visiting the Taproom</h2>
+                <p class="text-base md:text-lg" style="color: var(--text-muted);">Everything you need to know before you grab a pint at our facility.</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-[var(--bg-card)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Do you serve food or allow outside food?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        While we do not have an in-house kitchen, we partner with a rotating schedule of local food trucks that park right outside our patio every Thursday through Sunday. You are also more than welcome to bring your own food, order delivery directly to the taproom, or bring snacks from home!
+                    </div>
+                </div>
+
+                <div class="bg-[var(--bg-card)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Are children and pets allowed?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        Yes! We pride ourselves on being a family-friendly establishment. Children are welcome in the taproom as long as they are accompanied by a parent or guardian. Well-behaved, leashed dogs are strictly permitted on our outdoor patio area, but cannot come inside the main taproom due to health department regulations.
+                    </div>
+                </div>
+
+                <div class="bg-[var(--bg-card)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Do you take reservations for small groups?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        For standard taproom visits, seating is purely first-come, first-served. However, if you have a group of 15 or more, please contact our event coordinator at least 48 hours in advance, and we will do our best to block off a section of tables for your party.
+                    </div>
+                </div>
+                
+                <div class="bg-[var(--bg-card)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Do you offer gluten-free or non-alcoholic options?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        Absolutely. While all of our house-brewed beers contain gluten, we maintain a dedicated tap line for a locally sourced hard cider, and we stock a variety of gluten-free canned wines. For non-alcoholic options, we offer house-made craft sodas, sparkling water, and cold-brew coffee on nitro.
+                    </div>
+                </div>
+
+                <div class="bg-[var(--bg-card)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Where can I park when visiting?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        We have a dedicated 30-spot parking lot directly behind the brewery building. If our lot is full, there is ample free street parking along Brewer's Lane and the adjacent cross streets. We strongly encourage ridesharing if you plan on sampling heavily!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq-services" class="section-pad bg-[var(--bg-color)]">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <span class="sec-subtitle">Beyond the Pint</span>
+                <h2 class="sec-title">Memberships, Tours & Kegs</h2>
+                <p class="text-base md:text-lg" style="color: var(--text-muted);">Details regarding our premium services and bulk sales.</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-[var(--bg-secondary)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>How do I sign up for the Mug Club?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        Mug Club sign-ups open twice a year (January and July) and spots are highly limited due to physical shelf space for the ceramic mugs. You can secure your spot by navigating to our <a href="pricing.html" class="text-amber-500 hover:underline">Pricing</a> page during an open enrollment period, or by speaking to a bartender on-site.
+                    </div>
+                </div>
+
+                <div class="bg-[var(--bg-secondary)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Can I book a private brewery tour?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        Yes! We offer Private Group Buyouts for corporate team-building events, bachelor/bachelorette parties, and large family gatherings. A private excursion allows you to secure the entire tour block and comes with customizable tasting menus. Please reach out via our Contact page for availability.
+                    </div>
+                </div>
+
+                <div class="bg-[var(--bg-secondary)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Do you sell kegs to the general public?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        We certainly do. Kegs are available for public purchase for weddings, backyard BBQs, and personal kegerators. We require a 72-hour notice for all keg orders to ensure the specific beer is in stock and ready. A fully refundable $50 deposit is required for the stainless steel keg shell.
+                    </div>
+                </div>
+                
+                <div class="bg-[var(--bg-secondary)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>What equipment do I need for a keg purchase?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        All of our kegs use standard American "D-System" (Sankey) couplers. If you do not have your own kegerator or jockey box, you can rent a standard party pump (hand pump) and a plastic ice tub from us for an additional $15 fee.
+                        <br><br>
+                        
+                    </div>
+                </div>
+
+                <div class="bg-[var(--bg-secondary)] border rounded-2xl overflow-hidden shadow-sm hover:border-amber-500 transition-colors duration-300" style="border-color: var(--border-color);">
+                    <button class="faq-btn w-full text-left px-5 sm:px-8 py-5 sm:py-6 font-bold text-base sm:text-lg flex justify-between items-center focus:outline-none" style="color: var(--text-main);">
+                        <span>Are your tours wheelchair accessible?</span>
+                        <i class="fas fa-chevron-down text-sm shrink-0 ml-4 text-[var(--text-muted)]"></i>
+                    </button>
+                    <div class="faq-answer px-5 sm:px-8 pb-5 sm:pb-6 text-sm sm:text-base" style="color: var(--text-muted); line-height: 1.7;">
+                        The vast majority of our facility, including the taproom, patio, and main brewhouse floor, is fully ADA compliant and wheelchair accessible. However, the upper mezzanine where the milling room is located requires climbing a set of stairs. If a guest cannot access this area, the guide will bring the grain samples down to the main floor.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 sm:mt-16 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-3xl p-8 sm:p-10 text-center shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+                <h3 class="text-xl sm:text-2xl font-black mb-3 sm:mb-4 text-[var(--text-main)] relative z-10">Still have questions?</h3>
+                <p class="text-sm sm:text-base text-[var(--text-muted)] mb-6 sm:mb-8 max-w-lg mx-auto relative z-10">If you couldn't find the answer you were looking for, our taproom staff is ready to help. Shoot us an email or give us a call.</p>
+                <a href="contact.html" class="btn btn-solid w-full sm:w-auto relative z-10 shadow-md hover:-translate-y-1 transition-transform">Contact Support</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full py-16 md:py-20" style="background-color: var(--accent-color);">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h3 class="text-3xl md:text-4xl font-black mb-4 text-white tracking-tight">Join the Brew Club</h3>
+            <p class="mb-8 md:mb-10 text-white/90 text-base md:text-lg font-medium">Subscribe to get early access to limited releases and exclusive event pricing.</p>
+            <form class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <input type="email" placeholder="Enter your email address" class="w-full max-w-md px-6 py-4 rounded-[30px] border-none outline-none text-gray-900 shadow-lg text-base" required>
+                <button type="submit" class="px-8 py-4 rounded-[30px] bg-gray-900 text-white font-bold hover:bg-gray-800 transition-colors shadow-lg w-full sm:w-auto whitespace-nowrap text-base uppercase tracking-wide">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-10 pt-4">
+                <div class="lg:col-span-4">
+                    <a href="index.html" class="text-3xl font-black tracking-tighter mb-6 block" style="color: var(--text-main); text-decoration: none;">
+                        BrewSync
+                    </a>
+                    <p class="opacity-80 leading-relaxed text-sm mb-6 max-w-sm" style="color: var(--text-muted);">Pouring passion into every glass. Your neighborhood hub for authentic craft experiences.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="social-link-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-untappd"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        <div>
+                            <h4>Quick Links</h4>
+                            <ul class="space-y-3">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="services.html">Our Services</a></li>
+                                <li><a href="pricing.html">Pricing Plans</a></li>
+                                <li><a href="blog.html">Latest Blog</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Member Area</h4>
+                            <ul class="space-y-3">
+                                <li><a href="user.html">User Dashboard</a></li>
+                                <li><a href="admin.html">Admin Dashboard</a></li>
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="sm:col-span-2 md:col-span-1">
+                            <h4>Visit Us</h4>
+                            <ul class="space-y-3 text-[var(--text-muted)] text-sm">
+                                <li class="flex items-start"><i class="fas fa-map-marker-alt mt-1 mr-3 shrink-0" style="color: var(--accent-color);"></i><span>123 Brewer's Lane<br>Portland, OR 97204</span></li>
+                                <li class="flex items-center"><i class="fas fa-phone mr-3 shrink-0" style="color: var(--accent-color);"></i><a href="tel:+15559876543" class="break-all">+1 (555) 987-6543</a></li>
+                                <li class="flex items-center"><i class="fas fa-envelope mr-3 shrink-0" style="color: var(--accent-color);"></i><a href="mailto:cheers@BrewSync.com" class="break-all">cheers@BrewSync.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+                <p style="color: var(--text-muted);">© 2026 BrewSync. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Drawer Logic
+        const mobileBtn = document.getElementById('mobile-btn'); 
+        const drawer = document.getElementById('drawer'); 
+        const drawerOverlay = document.getElementById('drawer-overlay'); 
+        const closeDrawer = document.getElementById('close-drawer'); 
+        
+        function toggleDrawer() { 
+            drawer.classList.toggle('active'); 
+            drawerOverlay.classList.toggle('active'); 
+        }
+        
+        mobileBtn.onclick = toggleDrawer; 
+        closeDrawer.onclick = toggleDrawer; 
+        drawerOverlay.onclick = toggleDrawer;
+        
+        // Theme Logic
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile'); 
+        const theme = localStorage.getItem('theme') || 'light';
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode'); 
+                themeMobile.classList.add('active');
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeMobile.classList.remove('active');
+            }
+        }
+        
+        updateThemeUI(theme === 'dark');
+        
+        function toggleTheme() { 
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light'); 
+        }
+        
+        themeDesktop.onclick = toggleTheme; 
+        themeMobile.onclick = toggleTheme;
+        
+        // RTL Logic
+        const rtlBtn = document.getElementById('rtl-btn'); 
+        const rtlMobile = document.getElementById('rtl-toggle-mobile'); 
+        const dir = localStorage.getItem('dir') || 'ltr';
+        
+        if (dir === 'rtl') { 
+            document.documentElement.dir = 'rtl'; 
+            rtlMobile.innerText = "LTR"; 
+            rtlBtn.innerText = "LTR";
+        }
+        
+        function toggleRTL() { 
+            const isRTL = document.documentElement.dir === 'rtl'; 
+            document.documentElement.dir = isRTL ? 'ltr' : 'rtl'; 
+            localStorage.setItem('dir', isRTL ? 'ltr' : 'rtl'); 
+            rtlMobile.innerText = isRTL ? 'SWITCH' : 'LTR'; 
+            rtlBtn.innerText = isRTL ? 'RTL' : 'LTR';
+        }
+        
+        rtlBtn.onclick = toggleRTL; 
+        rtlMobile.onclick = toggleRTL;
+
+        /* FAQ Accordion Logic */
+        const faqButtons = document.querySelectorAll('.faq-btn');
+        faqButtons.forEach(btn => {
+            btn.onclick = () => {
+                const content = btn.nextElementSibling;
+                // Close currently open accordion items if desired (optional)
+                document.querySelectorAll('.faq-answer.active').forEach(openContent => {
+                    if(openContent !== content) {
+                        openContent.classList.remove('active');
+                        openContent.previousElementSibling.classList.remove('active');
+                    }
+                });
+                
+                // Toggle clicked item
+                content.classList.toggle('active');
+                btn.classList.toggle('active');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BrewSync</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/jpeg" href="images/growwpark_logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === RESET & CORE === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* === THEME VARIABLES === */
+        :root {
+            --bg-color: #ffffff;
+            --bg-secondary: #f4f4f5;
+            --bg-card: #ffffff; 
+            --text-main: #111111;
+            --text-muted: #666666;
+            --accent-color: #f59e0b; /* Amber/Brewery Vibe */
+            --border-color: #e5e5e5;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --drawer-bg: #111111;
+            --drawer-text: #ffffff;
+        }
+
+        /* DARK MODE */
+        body.dark-mode {
+            --bg-color: #0a0a0a;
+            --bg-secondary: #171717;
+            --bg-card: #1f1f1f; 
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --border-color: #262626;
+            --nav-bg: rgba(10, 10, 10, 0.95);
+        }
+
+        /* Input Placeholders for Dark/Light Mode Fix */
+        ::placeholder { color: #9ca3af !important; opacity: 1; transition: color 0.3s; }
+        body.dark-mode ::placeholder { color: #52525b !important; }
+
+        /* RTL SUPPORT */
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+        [dir="rtl"] .pl-4 { padding-right: 1rem; padding-left: 0; }
+        [dir="rtl"] .fa-arrow-right { transform: rotate(180deg); }
+
+        /* === NAVBAR (FULL WIDTH) === */
+        .navbar { 
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color); 
+            padding: 16px 0; transition: all 0.3s ease;
+            box-shadow: 0 4px 20px -10px rgba(0,0,0,0.05);
+        }
+        body.dark-mode .navbar { box-shadow: 0 4px 20px -10px rgba(0,0,0,0.5); }
+        
+        .nav-link { padding: 8px 12px; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; border-radius: 20px; }
+        .nav-link:hover, .nav-link.active { color: white; background: var(--accent-color); }
+        
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { position: absolute; top: 100%; left: 0; margin-top: 10px; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.2s ease; z-index: 100; }
+        .dropdown-inner { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; min-width: 220px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 12px 0; overflow: hidden; }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item { display: block; padding: 10px 20px; color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 500; transition: background 0.2s; }
+        .dropdown-item:hover { background: var(--bg-secondary); color: var(--accent-color); padding-left: 26px; }
+
+        /* DESKTOP PILL TOGGLE */
+        .theme-toggle-pill { width: 56px; height: 28px; background: var(--bg-secondary); border-radius: 30px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; border: 1px solid var(--border-color); }
+        .theme-toggle-pill i { font-size: 11px; z-index: 1; }
+        .theme-toggle-pill .fa-sun { color: #f59e0b; }
+        .theme-toggle-pill .fa-moon { color: #999; }
+        .theme-toggle-pill .thumb { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: white; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 2; }
+        body.dark-mode .theme-toggle-pill .thumb { transform: translateX(28px); background: #262626; }
+
+        .btn { padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+        .btn-solid { background: var(--accent-color); color: white; border: 2px solid var(--accent-color); }
+        .btn-solid:hover { background: transparent; color: var(--accent-color); }
+        
+        .btn-outline-white { border: 2px solid white; color: white; background: transparent; }
+        .btn-outline-white:hover { background: white; color: #111; }
+
+        /* === REDESIGNED HERO === */
+        .hero-full {
+            position: relative; height: 100vh; min-height: 600px; display: flex; align-items: center; justify-content: center;
+            background-image: url('images/pexels-enginakyurt-1552630.jpg'); background-size: cover; background-position: center; background-attachment: fixed; 
+        }
+        .hero-full::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(10,10,10,0.9) 100%); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 0 24px; margin-top: 60px; }
+        .hero-badge { display: inline-block; padding: 6px 16px; background: var(--accent-color); color: white; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; border-radius: 30px; margin-bottom: 24px; }
+        
+        /* === SECTION UTILITIES === */
+        .section-pad { padding: 80px 24px; }
+        @media (min-width: 768px) { .section-pad { padding: 100px 24px; } }
+        .sec-title { font-size: 2.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 1rem; letter-spacing: -0.5px; line-height: 1.2; }
+        @media (min-width: 768px) { .sec-title { font-size: 2.75rem; } }
+        .sec-subtitle { color: var(--accent-color); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem; margin-bottom: 0.75rem; display: inline-block; }
+
+        /* === NEW JOURNEY LAYOUT STYLES === */
+        .journey-year { 
+            -webkit-text-stroke: 2px var(--accent-color);
+            color: transparent;
+            transition: all 0.4s ease;
+        }
+        .journey-card:hover .journey-year {
+            color: var(--accent-color);
+            -webkit-text-stroke: 0px;
+        }
+        .journey-line {
+            position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: var(--border-color); z-index: 0;
+        }
+        .journey-dot {
+            width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); border: 4px solid var(--bg-secondary);
+            position: absolute; left: 17px; top: 40px; z-index: 1; transition: transform 0.3s;
+        }
+        .journey-card:hover .journey-dot { transform: scale(1.5); }
+
+        @media screen and (max-width: 768px) {
+            .journey-line { left: 16px; }
+            .journey-dot { left: 9px; }
+        }
+
+        /* Team Card Hover */
+        .team-card { position: relative; overflow: hidden; border-radius: 16px; border: 1px solid var(--border-color); background: var(--bg-card); display: flex; flex-direction: column; }
+        .team-img-wrapper { position: relative; overflow: hidden; }
+        .team-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .team-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; gap: 16px; opacity: 0; transition: opacity 0.3s ease; }
+        .team-card:hover .team-img-wrapper img { transform: scale(1.1); }
+        .team-card:hover .team-overlay { opacity: 1; }
+        .team-social { width: 40px; height: 40px; border-radius: 50%; background: white; color: black; display: flex; align-items: center; justify-content: center; transform: translateY(20px); transition: all 0.3s ease; }
+        .team-card:hover .team-social { transform: translateY(0); }
+        .team-social:hover { background: var(--accent-color); color: white; }
+
+        /* === DRAWER === */
+        .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 320px; height: 100vh; background: var(--drawer-bg); z-index: 1000; transition: right 0.3s; padding: 30px; color: var(--drawer-text); overflow-y: auto; }
+        .drawer.active { right: 0; }
+        [dir="rtl"] .drawer { right: auto; left: -100%; transition: left 0.3s; }
+        [dir="rtl"] .drawer.active { left: 0; }
+        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; z-index: 999; }
+        .drawer-overlay.active { display: block; }
+        .drawer-link { display: block; padding: 14px 0; color: #a3a3a3; text-decoration: none; font-size: 16px; font-weight: 600; border-bottom: 1px solid #262626; transition: 0.2s; }
+        .drawer-link:hover { color: var(--accent-color); padding-left: 8px; border-color: var(--accent-color); }
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .hamburger span { width: 100%; height: 2px; background: var(--text-main); transition: 0.3s; border-radius: 2px; }
+        
+        /* Mobile Switch */
+        .toggle { width: 44px; height: 24px; background: #333; border-radius: 20px; position: relative; cursor: pointer; transition: all 0.3s; }
+        .toggle::before { content: ''; position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; top: 4px; left: 4px; transition: left 0.3s; }
+        .toggle.active { background: var(--accent-color); }
+        .toggle.active::before { left: 24px; }
+
+        /* === FOOTER === */
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding-top: 60px; }
+        footer h4 { color: var(--text-main); font-weight: 800; font-size: 1.1rem; margin-bottom: 24px; } 
+        footer a, footer li, footer span { color: var(--text-muted); text-decoration: none; transition: all 0.3s; font-size: 0.95rem; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--text-main); background: var(--bg-card); }
+        .social-link-circle:hover { background: var(--accent-color); color: white; border-color: var(--accent-color); transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding: 24px 0; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-tighter" style="color: var(--text-main); text-decoration: none;">
+                BrewSync
+            </a>
+            
+            <div class="hidden xl:flex items-center space-x-1">
+                <div class="dropdown">
+                    <div class="nav-link">Home <i class="fas fa-chevron-down text-[10px] ml-1 opacity-70"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link active">About</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <div class="dropdown">
+                    <div class="nav-link">Dashboard <i class="fas fa-chevron-down text-[10px] ml-1 opacity-70"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="user.html" class="dropdown-item">User Dashboard</a>
+                            <a href="admin.html" class="dropdown-item">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden xl:flex items-center space-x-4">
+                <a href="register.html" class="btn btn-solid !py-2 !px-5 !text-xs">Register</a> <a href="login.html" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-amber-500 transition-colors">Login</a>
+                
+                <div class="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1"></div>
+                
+                <button id="rtl-btn" class="text-xs font-bold text-gray-500 hover:text-amber-500 uppercase tracking-widest">RTL</button>
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i><i class="fas fa-moon"></i><div class="thumb"></div>
+                </div>
+            </div>
+
+            <button id="mobile-btn" class="xl:hidden p-2">
+                <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+            </button>
+        </div>
+    </nav>
+
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="mb-8 flex justify-between items-center pb-4 border-b border-gray-800">
+            <h2 class="text-xl font-black text-white">BrewSync</h2>
+            <button id="close-drawer" class="text-gray-400 hover:text-white text-xl p-2"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex flex-col space-y-1">
+            <a href="index.html" class="drawer-link">Home Page 1</a>
+            <a href="home-2.html" class="drawer-link">Home Page 2</a>
+            <a href="about.html" class="drawer-link" style="color: var(--accent-color);">About Us</a>
+            <a href="services.html" class="drawer-link">Services</a>
+            <a href="pricing.html" class="drawer-link">Pricing</a>
+            <a href="blog.html" class="drawer-link">Blog</a>
+            <a href="faq.html" class="drawer-link">FAQ</a>
+            <a href="contact.html" class="drawer-link">Contact</a>
+            <div class="my-4 border-t border-gray-800"></div>
+            <a href="user.html" class="drawer-link">User Dashboard</a>
+            <a href="admin.html" class="drawer-link">Admin Dashboard</a>
+        </div>
+        <div class="mt-8 pt-6 border-t border-gray-800">
+            <div class="flex items-center justify-between mb-5">
+                <span class="text-gray-300 font-medium text-sm uppercase tracking-wider">Dark Mode</span>
+                <div class="toggle" id="theme-toggle-mobile"></div>
+            </div>
+            <div class="flex items-center justify-between mb-8">
+                <span class="text-gray-300 font-medium text-sm uppercase tracking-wider">RTL Mode</span>
+                <button id="rtl-toggle-mobile" class="text-white font-bold border border-gray-600 px-3 py-1 rounded text-xs hover:border-amber-500">SWITCH</button>
+            </div>
+            <a href="login.html" class="btn w-full text-center block mb-3 border border-gray-600 text-white hover:bg-gray-800">Login</a>
+            <a href="register.html" class="btn btn-solid w-full text-center block">Register</a>
+        </div>
+    </div>
+
+    <section class="hero-full w-full">
+        <div class="hero-content">
+            <span class="hero-badge"><i class="fas fa-book-open mr-2"></i>Our Roots</span>
+            <h1 class="text-4xl md:text-5xl lg:text-[4rem] font-black leading-tight mb-6 text-white tracking-tight">Crafting Community,<br><span class="text-[var(--accent-color)]">One Pint at a Time.</span></h1>
+            <p class="text-gray-300 text-base md:text-lg lg:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">From a humble garage setup to your neighborhood taproom. Discover the passion, the people, and the process behind BrewSync.</p>
+            <div class="flex gap-4 justify-center flex-wrap">
+                <a href="#mission" class="btn btn-solid w-full sm:w-auto"><i class="fas fa-arrow-down mr-2"></i> Read Our Story</a>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <section id="mission" class="section-pad bg-[var(--bg-color)]">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+                    <span class="sec-subtitle">Purpose & Values</span>
+                    <h2 class="sec-title">More Than Just Beer</h2>
+                    <p class="text-base md:text-lg" style="color: var(--text-muted);">We are driven by a simple philosophy: respect the ingredients, push the boundaries of flavor, and build a space where everyone feels like a regular.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+                    <div class="relative">
+                        <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
+                            <img src="images/pexels-pixabay-159291.jpg" alt="Brewery Grain" class="w-full h-64 sm:h-80 lg:h-[400px] object-cover">
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 lg:-bottom-10 lg:-right-10 z-20 w-2/3 rounded-2xl overflow-hidden shadow-2xl border-4 border-[var(--bg-color)] hidden sm:block">
+                            <img src="images/pexels-elevate-1267311.jpg" alt="Cheersing Glasses" class="w-full h-40 md:h-48 lg:h-[250px] object-cover">
+                        </div>
+                        <div class="absolute top-10 -left-6 lg:-left-10 w-20 h-20 lg:w-24 lg:h-24 bg-amber-100 dark:bg-amber-900/20 rounded-full z-0"></div>
+                    </div>
+
+                    <div class="flex flex-col gap-6 md:gap-8 mt-6 sm:mt-10 lg:mt-0">
+                        <div class="bg-[var(--bg-secondary)] p-6 md:p-8 rounded-2xl border border-[var(--border-color)]">
+                            <div class="w-12 h-12 bg-amber-500 text-white rounded-lg flex items-center justify-center text-xl mb-4">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-3 text-[var(--text-main)]">Our Mission</h3>
+                            <p class="text-sm md:text-base" style="color: var(--text-muted); line-height: 1.7;">To craft exceptional, small-batch beers using sustainably sourced local ingredients, while providing a welcoming taproom environment that fosters community connection, education, and shared experiences.</p>
+                        </div>
+                        
+                        <div class="bg-[var(--bg-secondary)] p-6 md:p-8 rounded-2xl border border-[var(--border-color)]">
+                            <div class="w-12 h-12 bg-amber-500 text-white rounded-lg flex items-center justify-center text-xl mb-4">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-3 text-[var(--text-main)]">Our Vision</h3>
+                            <p class="text-sm md:text-base" style="color: var(--text-muted); line-height: 1.7;">To be the region's most beloved independent microbrewery, recognized nationwide for our innovative brewing techniques, our commitment to zero-waste production, and our vibrant, inclusive culture.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-pad bg-[var(--bg-secondary)] relative">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16 md:mb-20">
+                    <span class="sec-subtitle">The History</span>
+                    <h2 class="sec-title">How We Got Here</h2>
+                </div>
+
+                <div class="relative">
+                    <div class="space-y-12 md:space-y-20">
+                        
+                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start relative journey-card">
+                            <div class="journey-line hidden sm:block"></div>
+                            <div class="journey-dot hidden sm:block"></div>
+                            <div class="lg:w-1/3 sm:pl-12 lg:pl-16 lg:sticky top-32 pt-2 z-10">
+                                <span class="text-5xl sm:text-6xl lg:text-7xl font-black block journey-year">2018</span>
+                                <h3 class="text-xl md:text-2xl font-bold mt-2 text-[var(--text-main)]">The Garage Days</h3>
+                            </div>
+                            <div class="w-full lg:w-2/3 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] overflow-hidden shadow-md z-10">
+                                <img src="images/pexels-elevate-1267332.jpg" alt="Homebrewing in Garage" class="w-full h-56 md:h-64 lg:h-72 object-cover">
+                                <div class="p-6 md:p-8">
+                                    <p class="text-base md:text-lg leading-relaxed" style="color: var(--text-muted);">It all began with a 5-gallon homebrew kit, a messy garage, and a lot of trial and error. Our founders spent weekends experimenting with wildly different yeast strains and hop combinations until they finally crafted what would become our flagship IPA.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start relative journey-card">
+                            <div class="journey-line hidden sm:block"></div>
+                            <div class="journey-dot hidden sm:block"></div>
+                            <div class="lg:w-1/3 sm:pl-12 lg:pl-16 lg:sticky top-32 pt-2 z-10">
+                                <span class="text-5xl sm:text-6xl lg:text-7xl font-black block journey-year">2020</span>
+                                <h3 class="text-xl md:text-2xl font-bold mt-2 text-[var(--text-main)]">First Commercial Batch</h3>
+                            </div>
+                            <div class="w-full lg:w-2/3 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] overflow-hidden shadow-md z-10">
+                                <img src="images/pexels-sonja-maric-2707972.jpg" alt="First Commercial Brew" class="w-full h-56 md:h-64 lg:h-72 object-cover">
+                                <div class="p-6 md:p-8">
+                                    <p class="text-base md:text-lg leading-relaxed" style="color: var(--text-muted);">After perfecting the recipes and securing a small loan, we moved into a 500-square-foot warehouse space. We brewed our first commercial batch—a rich oatmeal stout—and sold out at the local farmer's market in under two hours.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start relative journey-card">
+                            <div class="journey-line hidden sm:block"></div>
+                            <div class="journey-dot hidden sm:block"></div>
+                            <div class="lg:w-1/3 sm:pl-12 lg:pl-16 lg:sticky top-32 pt-2 z-10">
+                                <span class="text-5xl sm:text-6xl lg:text-7xl font-black block journey-year">2023</span>
+                                <h3 class="text-xl md:text-2xl font-bold mt-2 text-[var(--text-main)]">Opening The Taproom</h3>
+                            </div>
+                            <div class="w-full lg:w-2/3 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] overflow-hidden shadow-md z-10">
+                                <img src="images/pexels-introspectivedsgn-12820773.jpg" alt="Opening Taproom" class="w-full h-56 md:h-64 lg:h-72 object-cover">
+                                <div class="p-6 md:p-8">
+                                    <p class="text-base md:text-lg leading-relaxed" style="color: var(--text-muted);">We found our forever home in a renovated 1920s brick warehouse. Opening the taproom allowed us to pour pints directly for our neighbors, host live music, and truly become the community hub we always dreamed of being.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start relative journey-card">
+                            <div class="journey-line hidden sm:block"></div>
+                            <div class="journey-dot hidden sm:block"></div>
+                            <div class="lg:w-1/3 sm:pl-12 lg:pl-16 lg:sticky top-32 pt-2 z-10">
+                                <span class="text-5xl sm:text-6xl lg:text-7xl font-black block journey-year">2026</span>
+                                <h3 class="text-xl md:text-2xl font-bold mt-2 text-[var(--text-main)]">Expansion & Barrels</h3>
+                            </div>
+                            <div class="w-full lg:w-2/3 bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] overflow-hidden shadow-md z-10">
+                                <img src="images/pexels-cottonbro-5537794.jpg" alt="Friends Drinking" class="w-full h-56 md:h-64 lg:h-72 object-cover">
+                                <div class="p-6 md:p-8">
+                                    <p class="text-base md:text-lg leading-relaxed" style="color: var(--text-muted);">Demand skyrocketed. We expanded our brewing capacity by 300% and launched our exclusive Barrel-Aging program, focusing on wild ales, sour blends, and bourbon-barrel-aged stouts. The journey is just getting started.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-pad bg-[var(--bg-color)]">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12 md:mb-16">
+                    <span class="sec-subtitle">The Masters at Work</span>
+                    <h2 class="sec-title">Meet The Brewmasters</h2>
+                    <p class="max-w-2xl mx-auto text-base md:text-lg" style="color: var(--text-muted);">The passionate individuals who wake up early, carry the heavy grain bags, and obsess over every temperature drop to bring you the perfect pint.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+                    
+                    <div class="team-card">
+                        <div class="team-img-wrapper h-72 sm:h-80 lg:h-[350px]">
+                            <img src="images/pexels-elevate-1267322.jpg" alt="Head Brewer">
+                            <div class="team-overlay">
+                                <a href="#" class="team-social"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="team-social" style="transition-delay: 0.1s;"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="team-social" style="transition-delay: 0.2s;"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                        <div class="p-6 text-center flex-grow flex flex-col justify-center">
+                            <h3 class="text-lg md:text-xl font-bold text-[var(--text-main)]">Marcus Vance</h3>
+                            <span class="text-amber-500 font-semibold text-xs md:text-sm uppercase tracking-wider block mb-3">Head Brewmaster</span>
+                            <p class="text-xs md:text-sm" style="color: var(--text-muted);">With 15 years in the craft beer industry, Marcus brings a scientific approach and a wild imagination to the brewhouse.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-img-wrapper h-72 sm:h-80 lg:h-[350px]">
+                            <img src="images/pexels-elevate-1267331.jpg" alt="Cellar Manager">
+                            <div class="team-overlay">
+                                <a href="#" class="team-social"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="team-social" style="transition-delay: 0.1s;"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="team-social" style="transition-delay: 0.2s;"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                        <div class="p-6 text-center flex-grow flex flex-col justify-center">
+                            <h3 class="text-lg md:text-xl font-bold text-[var(--text-main)]">Elena Rodriguez</h3>
+                            <span class="text-amber-500 font-semibold text-xs md:text-sm uppercase tracking-wider block mb-3">Lead Fermentation</span>
+                            <p class="text-xs md:text-sm" style="color: var(--text-muted);">Elena manages the magic that happens after the boil. She is our resident yeast whisperer and quality control fanatic.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card sm:col-span-2 lg:col-span-1 sm:max-w-md sm:mx-auto lg:max-w-none w-full">
+                        <div class="team-img-wrapper h-72 sm:h-80 lg:h-[350px]">
+                            <img src="images/pexels-marcelochagas-3324434.jpg" alt="Taproom Manager">
+                            <div class="team-overlay">
+                                <a href="#" class="team-social"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="team-social" style="transition-delay: 0.1s;"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="team-social" style="transition-delay: 0.2s;"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                        <div class="p-6 text-center flex-grow flex flex-col justify-center">
+                            <h3 class="text-lg md:text-xl font-bold text-[var(--text-main)]">David Chen</h3>
+                            <span class="text-amber-500 font-semibold text-xs md:text-sm uppercase tracking-wider block mb-3">Taproom Director</span>
+                            <p class="text-xs md:text-sm" style="color: var(--text-muted);">David ensures that the front-of-house runs as smoothly as our stout. He curates the vibes, events, and customer experience.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="section-pad bg-[var(--bg-secondary)] border-t border-[var(--border-color)]">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16 md:mb-20">
+                    <span class="sec-subtitle">Our Method</span>
+                    <h2 class="sec-title">How We Craft It</h2>
+                    <p class="max-w-2xl mx-auto text-base md:text-lg" style="color: var(--text-muted);">We don't cut corners. From grain to glass, every step is meticulously monitored to ensure maximum flavor extraction and perfect carbonation.</p>
+                </div>
+
+                <div class="flex flex-col gap-16 md:gap-20">
+                    
+                    <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+                        <div class="w-full lg:w-1/2">
+                            <div class="rounded-2xl overflow-hidden shadow-xl border border-[var(--border-color)] relative group">
+                                <img src="images/pexels-elevate-1267314.jpg" alt="Mashing Process" class="w-full h-64 sm:h-80 md:h-[400px] object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute top-4 left-4 w-10 h-10 md:w-12 md:h-12 bg-amber-500 text-white rounded-full flex items-center justify-center font-black text-lg md:text-xl shadow-lg z-10">1</div>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2">
+                            <h3 class="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-[var(--text-main)]">Mashing & Lautering</h3>
+                            <p class="text-base md:text-lg mb-4 md:mb-6" style="color: var(--text-muted);">We start by mixing cracked malted barley with hot water in the mash tun. This process activates natural enzymes in the malt, converting starches into fermentable sugars. We then carefully separate this sweet liquid (wort) from the grain husks.</p>
+                            <ul class="space-y-2 md:space-y-3 text-sm md:text-base font-medium text-[var(--text-main)]">
+                                <li><i class="fas fa-check text-amber-500 mr-2"></i> Locally sourced grains.</li>
+                                <li><i class="fas fa-check text-amber-500 mr-2"></i> Precise temperature control.</li>
+                                <li><i class="fas fa-check text-amber-500 mr-2"></i> Spent grains donated to local farms.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-12">
+                        <div class="w-full lg:w-1/2">
+                            <div class="rounded-2xl overflow-hidden shadow-xl border border-[var(--border-color)] relative group">
+                                <img src="images/pexels-elevate-1267318.jpg" alt="Boiling & Hopping" class="w-full h-64 sm:h-80 md:h-[400px] object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute top-4 right-4 w-10 h-10 md:w-12 md:h-12 bg-amber-500 text-white rounded-full flex items-center justify-center font-black text-lg md:text-xl shadow-lg z-10">2</div>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2">
+                            <h3 class="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-[var(--text-main)]">Boiling & Hopping</h3>
+                            <p class="text-base md:text-lg mb-4 md:mb-6" style="color: var(--text-muted);">The sweet wort is transferred to the kettle and brought to a rolling boil. Here is where we add hops. Early additions provide the crucial bitter balance to the sweet malt, while late additions deliver those complex floral, citrus, and piney aromas.</p>
+                            <a href="services.html" class="text-amber-500 text-sm md:text-base font-bold hover:underline flex items-center gap-2">
+                                Learn about our Brewery Tours <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+                        <div class="w-full lg:w-1/2">
+                            <div class="rounded-2xl overflow-hidden shadow-xl border border-[var(--border-color)] relative group">
+                                <img src="images/pexels-cottonbro-5532992.jpg" alt="Fermentation" class="w-full h-64 sm:h-80 md:h-[400px] object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute top-4 left-4 w-10 h-10 md:w-12 md:h-12 bg-amber-500 text-white rounded-full flex items-center justify-center font-black text-lg md:text-xl shadow-lg z-10">3</div>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2">
+                            <h3 class="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-[var(--text-main)]">Fermentation & Serving</h3>
+                            <p class="text-base md:text-lg mb-4 md:mb-6" style="color: var(--text-muted);">After cooling, we pitch our proprietary yeast strains. The yeast consumes the sugars, producing alcohol and carbon dioxide. Once perfectly conditioned, the beer is kegged and hooked directly to our taproom lines for the freshest pour possible.</p>
+                            <div class="bg-amber-500/10 border-l-4 border-amber-500 p-4 rounded-r-lg mt-4">
+                                <p class="text-amber-800 dark:text-amber-400 text-sm md:text-base font-medium italic">"Great beer takes time, patience, and absolute respect for the yeast."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section class="w-full py-16 md:py-20" style="background-color: var(--accent-color);">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h3 class="text-3xl md:text-4xl font-black mb-4 text-white tracking-tight">Join the Brew Club</h3>
+            <p class="mb-8 md:mb-10 text-white/90 text-base md:text-lg font-medium">Subscribe to get early access to limited releases and exclusive event pricing.</p>
+            <form class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <input type="email" placeholder="Enter your email address" class="w-full max-w-md px-6 py-4 rounded-[30px] border-none outline-none text-gray-900 shadow-lg text-base" required>
+                <button type="submit" class="px-8 py-4 rounded-[30px] bg-gray-900 text-white font-bold hover:bg-gray-800 transition-colors shadow-lg w-full sm:w-auto whitespace-nowrap text-base uppercase tracking-wide">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-10 pt-4">
+                <div class="lg:col-span-4">
+                    <a href="index.html" class="text-3xl font-black tracking-tighter mb-6 block" style="color: var(--text-main); text-decoration: none;">
+                        BrewSync
+                    </a>
+                    <p class="opacity-80 leading-relaxed text-sm mb-6 max-w-sm" style="color: var(--text-muted);">Pouring passion into every glass. Your neighborhood hub for authentic craft experiences.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="social-link-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-untappd"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        <div>
+                            <h4>Quick Links</h4>
+                            <ul class="space-y-3">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="services.html">Our Services</a></li>
+                                <li><a href="pricing.html">Pricing Plans</a></li>
+                                <li><a href="blog.html">Latest Blog</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Member Area</h4>
+                            <ul class="space-y-3">
+                                <li><a href="user.html">User Dashboard</a></li>
+                                <li><a href="admin.html">Admin Dashboard</a></li>
+                                <li><a href="login.html">Login</a></li>
+                                <li><a href="register.html">Register</a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="sm:col-span-2 md:col-span-1">
+                            <h4>Visit Us</h4>
+                            <ul class="space-y-3 text-[var(--text-muted)] text-sm">
+                                <li class="flex items-start"><i class="fas fa-map-marker-alt mt-1 mr-3 shrink-0" style="color: var(--accent-color);"></i><span>123 Brewer's Lane<br>Portland, OR 97204</span></li>
+                                <li class="flex items-center"><i class="fas fa-phone mr-3 shrink-0" style="color: var(--accent-color);"></i><a href="tel:+15559876543" class="break-all">+1 (555) 987-6543</a></li>
+                                <li class="flex items-center"><i class="fas fa-envelope mr-3 shrink-0" style="color: var(--accent-color);"></i><a href="mailto:cheers@BrewSync.com" class="break-all">cheers@BrewSync.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+                <p style="color: var(--text-muted);">&copy; 2026 BrewSync. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Drawer Logic
+        const mobileBtn = document.getElementById('mobile-btn'); 
+        const drawer = document.getElementById('drawer'); 
+        const drawerOverlay = document.getElementById('drawer-overlay'); 
+        const closeDrawer = document.getElementById('close-drawer'); 
+        
+        function toggleDrawer() { 
+            drawer.classList.toggle('active'); 
+            drawerOverlay.classList.toggle('active'); 
+        }
+        
+        mobileBtn.onclick = toggleDrawer; 
+        closeDrawer.onclick = toggleDrawer; 
+        drawerOverlay.onclick = toggleDrawer;
+        
+        // Theme Logic
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile'); 
+        const theme = localStorage.getItem('theme') || 'light';
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode'); 
+                themeMobile.classList.add('active');
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeMobile.classList.remove('active');
+            }
+        }
+        
+        updateThemeUI(theme === 'dark');
+        
+        function toggleTheme() { 
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light'); 
+        }
+        
+        themeDesktop.onclick = toggleTheme; 
+        themeMobile.onclick = toggleTheme;
+        
+        // RTL Logic
+        const rtlBtn = document.getElementById('rtl-btn'); 
+        const rtlMobile = document.getElementById('rtl-toggle-mobile'); 
+        const dir = localStorage.getItem('dir') || 'ltr';
+        
+        if (dir === 'rtl') { 
+            document.documentElement.dir = 'rtl'; 
+            rtlMobile.innerText = "LTR"; 
+            rtlBtn.innerText = "LTR";
+        }
+        
+        function toggleRTL() { 
+            const isRTL = document.documentElement.dir === 'rtl'; 
+            document.documentElement.dir = isRTL ? 'ltr' : 'rtl'; 
+            localStorage.setItem('dir', isRTL ? 'ltr' : 'rtl'); 
+            rtlMobile.innerText = isRTL ? 'SWITCH' : 'LTR'; 
+            rtlBtn.innerText = isRTL ? 'RTL' : 'LTR';
+        }
+        
+        rtlBtn.onclick = toggleRTL; 
+        rtlMobile.onclick = toggleRTL;
+    </script>
+</body>
+</html>
