@@ -89,6 +89,10 @@
         .btn-outline-white { border: 2px solid white; color: white; background: transparent; }
         .btn-outline-white:hover { background: white; color: #111; }
 
+        /* NEW LOGIN HOVER BUTTON EFFECT */
+        .btn-outline-accent { border: 2px solid var(--accent-color); color: var(--accent-color); background: transparent; }
+        .btn-outline-accent:hover { background: var(--accent-color); color: white; }
+
         /* === REDESIGNED HERO === */
         .hero-full {
             position: relative;
@@ -182,7 +186,7 @@
 
             <div class="hidden xl:flex items-center gap-4">
                 <a href="register.html" class="btn btn-solid !py-2 !px-5 !text-xs normal-case">Register</a> 
-                <a href="login.html" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-amber-500 transition-colors">Login</a>
+                <a href="login.html" class="btn btn-outline-accent !py-2 !px-5 !text-xs normal-case">Login</a>
                 
                 <div class="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1"></div>
                 
@@ -404,71 +408,6 @@
             </div>
         </div>
     </main>
-
-    <section class="section-pad bg-[var(--bg-color)] border-t border-[var(--border-color)]">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                
-                <div class="space-y-6 md:space-y-8">
-                    <div>
-                        <span class="sec-subtitle">Facility Spotlight</span>
-                        <h2 class="sec-title mb-0">Inside The Barrel Room</h2>
-                    </div>
-                    
-                    <p class="text-base md:text-lg leading-relaxed text-[var(--text-muted)]">
-                        While our stainless steel fermenters handle the core range of crisp lagers and hazy IPAs, the true magic happens in the dimly lit, temperature-controlled sanctuary of our Barrel Room. This is where patience becomes an ingredient.
-                    </p>
-                    
-                    <ul class="space-y-4 md:space-y-5 pt-4 border-t border-[var(--border-color)]">
-                        <li class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-[var(--bg-secondary)] flex items-center justify-center text-amber-500 flex-shrink-0 mt-1 border border-[var(--border-color)]">
-                                <i class="fas fa-tree"></i>
-                            </div>
-                            <div>
-                                <strong class="text-[var(--text-main)] text-base md:text-lg block mb-1">Kentucky Bourbon Casks</strong>
-                                <p class="text-[var(--text-muted)] text-sm md:text-base leading-relaxed">We source freshly emptied oak barrels directly from top distilleries. These impart rich notes of vanilla, toasted coconut, and charred wood into our Imperial Stouts.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-[var(--bg-secondary)] flex items-center justify-center text-amber-500 flex-shrink-0 mt-1 border border-[var(--border-color)]">
-                                <i class="fas fa-wine-glass-alt"></i>
-                            </div>
-                            <div>
-                                <strong class="text-[var(--text-main)] text-base md:text-lg block mb-1">French Wine Foeders</strong>
-                                <p class="text-[var(--text-muted)] text-sm md:text-base leading-relaxed">Large wooden vats used exclusively for our wild ales and mixed-culture sours, allowing the beer to breathe and develop complex tartness over several years.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-[var(--bg-secondary)] flex items-center justify-center text-amber-500 flex-shrink-0 mt-1 border border-[var(--border-color)]">
-                                <i class="fas fa-stopwatch"></i>
-                            </div>
-                            <div>
-                                <strong class="text-[var(--text-main)] text-base md:text-lg block mb-1">The Test of Time</strong>
-                                <p class="text-[var(--text-muted)] text-sm md:text-base leading-relaxed">Unlike a standard ale that turns around in 14 days, our barrel-aged projects slumber for a minimum of 12 months, and sometimes up to 3 years, before seeing a glass.</p>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <blockquote class="pl-6 border-l-4 border-amber-500 text-base md:text-lg italic text-[var(--text-main)] font-medium mt-6 md:mt-8">
-                        "The barrel is the only ingredient we can't fully control. We fill it, we wait, and we let the wood dictate the final flavor profile. It is an exercise in surrender."
-                    </blockquote>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 h-full mt-6 lg:mt-0">
-                    <div class="col-span-2 h-48 sm:h-56 lg:h-80 rounded-2xl sm:rounded-[24px] overflow-hidden shadow-lg border border-[var(--border-color)]">
-                        <img src="images/pexels-cottonbro-5532992.jpg" alt="Barrels stacking" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
-                    </div>
-                    <div class="h-32 sm:h-48 lg:h-auto rounded-2xl sm:rounded-[24px] overflow-hidden shadow-lg border border-[var(--border-color)]">
-                        <img src="images/pexels-cottonbro-5530251.jpg" alt="Dark beer pour" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
-                    </div>
-                    <div class="h-32 sm:h-48 lg:h-auto rounded-2xl sm:rounded-[24px] overflow-hidden shadow-lg border border-[var(--border-color)]">
-                        <img src="images/pexels-elevate-1267322.jpg" alt="Brewer inspecting" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
 
     <section class="w-full py-16 md:py-20" style="background-color: var(--accent-color);">
         <div class="max-w-4xl mx-auto px-6 text-center">

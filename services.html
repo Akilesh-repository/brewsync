@@ -88,6 +88,10 @@
         .btn-outline-white { border: 2px solid white; color: white; background: transparent; }
         .btn-outline-white:hover { background: white; color: #111; }
 
+        /* NEW LOGIN HOVER BUTTON EFFECT */
+        .btn-outline-accent { border: 2px solid var(--accent-color); color: var(--accent-color); background: transparent; }
+        .btn-outline-accent:hover { background: var(--accent-color); color: white; }
+
         /* === REDESIGNED HERO (SERVICES) === */
         .hero-full {
             position: relative;
@@ -190,7 +194,7 @@
 
             <div class="hidden xl:flex items-center gap-4">
                 <a href="register.html" class="btn btn-solid !py-2 !px-5 !text-xs normal-case">Register</a> 
-                <a href="login.html" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-amber-500 transition-colors">Login</a>
+                <a href="login.html" class="btn btn-outline-accent !py-2 !px-5 !text-xs normal-case">Login</a>
                 
                 <div class="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1"></div>
                 
@@ -234,7 +238,7 @@
                 <span class="text-gray-300 font-medium text-sm uppercase tracking-wider">RTL Mode</span>
                 <button id="rtl-toggle-mobile" class="text-white font-bold border border-gray-600 px-3 py-1 rounded text-xs hover:border-amber-500">SWITCH</button>
             </div>
-            <a href="login.html" class="btn w-full text-center block mb-3 border border-gray-600 text-white hover:bg-gray-800">Login</a>
+            <a href="login.html" class="btn btn-outline-accent w-full text-center block mb-3">Login</a>
             <a href="register.html" class="btn btn-solid w-full text-center block">Register</a>
         </div>
     </div>

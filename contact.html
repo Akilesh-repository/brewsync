@@ -116,6 +116,10 @@
         .btn-outline-white { border: 2px solid white; color: white; background: transparent; }
         .btn-outline-white:hover { background: white; color: #111; }
 
+        /* NEW LOGIN HOVER BUTTON EFFECT */
+        .btn-outline-accent { border: 2px solid var(--accent-color); color: var(--accent-color); background: transparent; }
+        .btn-outline-accent:hover { background: var(--accent-color); color: white; }
+
         /* === REDESIGNED HERO === */
         .hero-full {
             position: relative;
@@ -140,9 +144,9 @@
         /* === SECTION UTILITIES === */
         .section-pad { padding: 80px 24px; }
         @media (min-width: 768px) { .section-pad { padding: 100px 24px; } }
-        .sec-title { font-size: 2.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 1rem; letter-spacing: -0.5px; line-height: 1.2; }
+        .sec-title { font-size: 2.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 1rem; line-height: 1.2; letter-spacing: -0.5px; }
         @media (min-width: 768px) { .sec-title { font-size: 2.75rem; } }
-        .sec-subtitle { color: var(--accent-color); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem; margin-bottom: 0.75rem; display: inline-block; }
+        .sec-subtitle { color: var(--accent-color); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; margin-bottom: 0.5rem; display: block; }
 
         /* === DRAWER === */
         .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 320px; height: 100vh; background: var(--drawer-bg); z-index: 1000; transition: right 0.3s; padding: 30px; color: var(--drawer-text); overflow-y: auto; }
@@ -211,7 +215,7 @@
 
             <div class="hidden xl:flex items-center gap-4">
                 <a href="register.html" class="btn btn-solid !py-2 !px-5 !text-xs normal-case">Register</a> 
-                <a href="login.html" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-amber-500 transition-colors">Login</a>
+                <a href="login.html" class="btn btn-outline-accent !py-2 !px-5 !text-xs normal-case">Login</a>
                 
                 <div class="w-px h-5 bg-gray-300 dark:bg-gray-700 mx-1"></div>
                 
@@ -462,7 +466,7 @@
             </div>
 
             <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-sm gap-4">
-                <p style="color: var(--text-muted);">&copy; 2026 BrewSync. All rights reserved.</p>
+                <p style="color: var(--text-muted);">© 2026 BrewSync. All rights reserved.</p>
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
